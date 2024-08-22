@@ -1,0 +1,1 @@
+ALTER TABLE cliente ADD CONSTRAINT unq_nro_cpf UNIQUE (nro_cpf);
