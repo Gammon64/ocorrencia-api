@@ -17,7 +17,7 @@ possibilidade de upload de fotos em um servidor de arquivos S3.
 Em um terminal, acesse a pasta do projeto e execute o comando:
 
 ```shell
-docker compose up
+docker compose up -d
 ```
 
 O comando irá subir o banco de dados PostgreSQL, o servidor de arquivos S3 e o servidor Spring.
