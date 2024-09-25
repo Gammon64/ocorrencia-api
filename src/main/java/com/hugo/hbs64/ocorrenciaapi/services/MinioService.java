@@ -57,6 +57,12 @@ public class MinioService {
         }
     }
 
+    /**
+     * Busca um arquivo no Min.io.
+     * @param bucketName Nome do bucket
+     * @param fileName Nome do arquivo
+     * @return URL do arquivo
+     */
     public static String getFileUrl(@NonNull String bucketName, @NonNull String fileName) {
         try {
             MinioClient minioClient = buildMinioClient();

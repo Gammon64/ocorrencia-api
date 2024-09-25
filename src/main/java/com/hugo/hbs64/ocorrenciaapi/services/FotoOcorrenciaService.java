@@ -17,6 +17,12 @@ public class FotoOcorrenciaService {
         this.fotoOcorrenciaRepository = fotoOcorrenciaRepository;
     }
 
+    /**
+     * Cria uma nova foto de ocorrência.
+     * @param ocorrencia Ocorrência.
+     * @param file Arquivo.
+     * @return Foto de ocorrência criada.
+     */ 
     public FotoOcorrencia createByOcorrenciaAndFile(Ocorrencia ocorrencia, MultipartFile file) {
         String bucketName = "fotos-ocorrencias";
         // Enviar o arquivo para o Min.io

@@ -19,18 +19,43 @@ public class ClienteService {
         this.clienteRepository = clienteRepository;
     }
 
+    /**
+     * Busca todos os clientes com paginação.
+     *
+     * @param pageable Paginação.
+     * @return Página de clientes.
+     */
     public Page<Cliente> findAll(Pageable pageable) {
         return clienteRepository.findAll(pageable);
     }
 
+    /**
+     * Busca um cliente pelo ID.
+     *
+     * @param id ID do cliente.
+     * @return Cliente.
+     */
     public Cliente findById(Long id) {
         return clienteRepository.findById(id).orElseThrow();
     }
 
+    /**
+     * Busca um cliente pelos Dados da ocorrência.
+     *
+     * @param formOcorrenciaDTO Dados da ocorrência.
+     * @return Cliente encontrado.
+     * @throws Exception Cliente não encontrado.
+     */
     public Cliente findByOcorrenciaDTO(FormOcorrenciaDTO formOcorrenciaDTO) {
         return clienteRepository.findByNmeClienteAndNroCpf(formOcorrenciaDTO.nmeCliente(), formOcorrenciaDTO.nroCpf()).orElseThrow();
     }
 
+    /**
+     * Cria um novo cliente.
+     *
+     * @param clienteDTO Dados do cliente.
+     * @return Cliente criado.
+     */
     public Cliente create(ClienteDTO clienteDTO) {
         if (clienteRepository.existsByNroCpf(clienteDTO.nroCpf())) {
             throw new CpfDuplicadoException("CPF já cadastrado: " + clienteDTO.nroCpf());
@@ -39,6 +64,13 @@ public class ClienteService {
         return clienteRepository.save(cliente);
     }
 
+    /**
+     * Atualiza um cliente.
+     *
+     * @param codCliente  ID do cliente.
+     * @param clienteDTO Dados do cliente.
+     * @return Cliente atualizado.
+     */
     public Cliente update(Long codCliente, ClienteDTO clienteDTO) {
         if (clienteRepository.existsByNroCpf(clienteDTO.nroCpf())) {
             throw new CpfDuplicadoException("CPF já cadastrado: " + clienteDTO.nroCpf());
@@ -48,6 +80,11 @@ public class ClienteService {
         return clienteRepository.save(cliente);
     }
 
+    /**
+     * Deleta um cliente pelo ID.
+     *
+     * @param id ID do cliente.
+     */
     public void deleteById(Long id) {
         clienteRepository.deleteById(id);
     }

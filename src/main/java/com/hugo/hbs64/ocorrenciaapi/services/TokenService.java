@@ -19,6 +19,11 @@ public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
+    /**
+     * Gera um token JWT
+     * @param login Login do usuário
+     * @return Token JWT
+     */
     public String gerarToken(String login) {
         //withClaim utilizado para adicionar campos ao JWT
         try {
@@ -35,6 +40,11 @@ public class TokenService {
         }
     }
 
+    /**
+     * Retorna o login do usuário a partir do token
+     * @param token Token JWT
+     * @return Login do usuário
+     */
     public String getSubject(String token) {
         try {
             var algoritimo = Algorithm.HMAC256(secret);

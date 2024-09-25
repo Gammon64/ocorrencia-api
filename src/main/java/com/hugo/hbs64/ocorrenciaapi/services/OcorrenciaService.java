@@ -33,6 +33,12 @@ public class OcorrenciaService {
         this.fotoOcorrenciaService = fotoOcorrenciaService;
     }
 
+    /**
+     * Busca todas as ocorrências com filtro.
+     * @param filtroOcorrenciaDTO Filtro.
+     * @param pageable Paginação.
+     * @return Página de ocorrências.
+     */
     public Page<Ocorrencia> findAllByFilter(FiltroOcorrenciaDTO filtroOcorrenciaDTO, Pageable pageable) {
         Page<Ocorrencia> ocorrenciaPage = ocorrenciaRepository.findAll(OcorrenciaSpecs.filtroOcorrenciaSpec(filtroOcorrenciaDTO), pageable);
 
@@ -45,10 +51,20 @@ public class OcorrenciaService {
         return ocorrenciaPage;
     }
 
+    /**
+     * Busca uma ocorrência pelo ID.
+     * @param id ID da ocorrência.
+     * @return Ocorrência.
+     */
     public Ocorrencia findById(Long id) {
         return ocorrenciaRepository.findById(id).orElseThrow();
     }
 
+    /**
+     * Constrói uma objeto Ocorrência a partir dos dados do DTO. Buscando o cliente e o endereço.
+     * @param formOcorrenciaDTO Dados da ocorrência.
+     * @return nova instância de Ocorrência.
+     */
     private Ocorrencia buildOcorrenciaByDTO(FormOcorrenciaDTO formOcorrenciaDTO) {
         // Busca o cliente e o endereco
         Cliente cliente = clienteService.findByOcorrenciaDTO(formOcorrenciaDTO);
@@ -57,6 +73,11 @@ public class OcorrenciaService {
         return new Ocorrencia(cliente, endereco);
     }
 
+    /**
+     * Salva as fotos da ocorrência no Min.io e associa com a ocorrência.
+     * @param ocorrencia Ocorrência.
+     * @param imagens Lista de imagens.
+     */
     private void saveFotoOcorrencia(Ocorrencia ocorrencia, List<MultipartFile> imagens) {
         if (!CollectionUtils.isEmpty(imagens)) {
             for (MultipartFile imagem : imagens) {
@@ -66,6 +87,11 @@ public class OcorrenciaService {
         }
     }
 
+    /**
+     * Cria uma nova ocorrência. Busca o cliente e o endereço e salva as fotos.
+     * @param formOcorrenciaDTO Dados da ocorrência.
+     * @return Ocorrência criada.
+     */
     public Ocorrencia create(FormOcorrenciaDTO formOcorrenciaDTO) {
         Ocorrencia ocorrencia = buildOcorrenciaByDTO(formOcorrenciaDTO);
         ocorrencia = ocorrenciaRepository.save(ocorrencia);
@@ -75,6 +101,12 @@ public class OcorrenciaService {
         return ocorrencia;
     }
 
+    /**
+     * Atualiza uma ocorrência. Verifica se a ocorrência está finalizada e salva novas fotos.
+     * @param codOcorrencia ID da ocorrência.
+     * @param formOcorrenciaDTO Dados da ocorrência.
+     * @return Ocorrência atualizada.
+     */
     public Ocorrencia update(Long codOcorrencia, FormOcorrenciaDTO formOcorrenciaDTO) {
         if (ocorrenciaRepository.existsByCodOcorrenciaAndStaOcorrencia(codOcorrencia, StatusOcorrencia.FINALIZADA)) {
             throw new OcorrenciaFinalizadaException("Ocorrência finalizada não pode ser alterada");
@@ -87,6 +119,11 @@ public class OcorrenciaService {
         return ocorrencia;
     }
 
+    /**
+     * Finaliza uma ocorrência. Altera o status da ocorrência para FINALIZADA.
+     * @param codOcorrencia ID da ocorrência.
+     * @return Ocorrência finalizada.
+     */
     public Ocorrencia finalizarOcorrencia(Long codOcorrencia) {
         Ocorrencia ocorrencia = ocorrenciaRepository.findById(codOcorrencia).orElseThrow();
         ocorrencia.setStaOcorrencia(StatusOcorrencia.FINALIZADA);
@@ -94,6 +131,10 @@ public class OcorrenciaService {
         return ocorrenciaRepository.save(ocorrencia);
     }
 
+    /**
+     * Deleta uma ocorrência pelo ID.
+     * @param codOcorrencia ID da ocorrência.
+     */
     public void delete(Long codOcorrencia) {
         ocorrenciaRepository.deleteById(codOcorrencia);
     }

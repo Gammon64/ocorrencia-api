@@ -27,6 +27,11 @@ public class UsuarioService {
         this.tokenService = tokenService;
     }
 
+    /**
+     * Cria um novo usuário.
+     * @param usuarioDTO Dados do usuário.
+     * @return Usuario criado.
+     */
     public Usuario create(UsuarioDTO usuarioDTO) {
         if (usuarioRepository.existsByLogin(usuarioDTO.login())) {
             throw new UsuarioDuplicadoException("Usuário já cadastrado");
@@ -36,6 +41,11 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+    /**
+     * Autentica um usuário e retorna um token
+     * @param usuarioDTO Dados do usuário.
+     * @return Token JWT.
+     */
     public String authenticate(UsuarioDTO usuarioDTO) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(usuarioDTO.login(), usuarioDTO.senha());
         Authentication autentication = authenticationManager.authenticate(authenticationToken);
