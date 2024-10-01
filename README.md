@@ -86,58 +86,35 @@ UI, clique no botão 'Authorize' e insira o token no campo 'Value'.
 Decidi adotar essa ordem de prioridade de acordo com o meu conhecimento, assim, agilizando o desenvolvimento do projeto
 para um ponto funcional e dando tempo de estudar novos conceitos.
 
-### 07/08
+### Parte 1
 
 - **[OK]** Planejar e esquematizar o projeto.
 - **[OK]** Criação do projeto.
 - **[OK]** Configuração dos ambientes Docker, banco de dados e servidor de arquivos.
 - **[OK]** Configuração do Flyway.
 
-### 08/08
+### Parte 2
 
 - **[OK]** Configuração do CRUD para Cliente.
-- **_[AJUSTAR]_** Testes unitários para Cliente.
-    - Falha em alguns testes, necessário ajustar a validação dos campos.
 - **[OK]** Configuração do CRUD para Endereço.
-- **_[AJUSTAR]_** Testes unitários para Endereço.
-    - Falha em alguns testes, necessário ajustar a validação dos campos.
 
-### 09/08
+### Parte 3
 
-- **_[AJUSTAR]_** Configuração do CRUD para Ocorrências.
-    - Incomplatibilidade entre o campo de arquivo e campo de dto na requisição.
+- Configuração do CRUD para Ocorrências.
 - Testes unitários para Ocorrências.
 - Serviço para upload e download de Foto Ocorrência.
 
-### 10/08
+### Parte 4
 
-#### Atrasos
-
-- **_[AJUSTAR]_** Serviço para upload e download de Foto Ocorrência.
-    - Incompatibilidade entre o campo de arquivo e campo de dto na requisição se mantém.
-
-#### Planejado
-
-- **_[AJUSTAR]_** Endpoint para filtrar ocorrências.
-    - Ao ajustar o upload de arquivos, esse endpoint deverá retornar a url das imagens.
 - **[OK]** Configurar autenticação.
 
-### 11/08
-
-#### Ajustes
+### Parte 5
 
 - **[OK]** Configuração do CRUD para Ocorrências.
 - **[OK]** Serviço para upload e download de Foto Ocorrência.
 - **[OK]** Endpoint para filtrar ocorrências.
 - **[OK]** Testes unitários para Cliente.
 - **[OK]** Testes unitários para Endereço.
-
-#### Atrasos
-
-- Testes unitários para Ocorrências.
-
-#### Planejado
-
 - **[OK]** Configurar Compose para subir o Spring.
 - **[OK]** Ajustes finais e documentação.
 - **[OK]** Subir o projeto para o BitBucket.
