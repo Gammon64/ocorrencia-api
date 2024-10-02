@@ -12,26 +12,11 @@ services:
       - ~/minio/data:/data
     command: server /data --console-address ":9001"
   database:
-    image: 'postgres:16'
+    image: "postgres:16"
     container_name: database
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
-      - 'POSTGRES_USER=admocorrencia'
-      - 'POSTGRES_DB=ocorrenciaapi'
-      - 'POSTGRES_PASSWORD=bebaagua!'
-  api:
-    image: 'ocorrencia-api:latest'
-    container_name: ocorrencia-api
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - '8080:8080'
-    depends_on:
-      - database
-      - minio
-    environment:
-      - 'SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/ocorrenciaapi'
-      - 'SPRING_DATASOURCE_USERNAME=admocorrencia'
-      - 'SPRING_DATASOURCE_PASSWORD=bebaagua!'
+      - "POSTGRES_USER=admocorrencia"
+      - "POSTGRES_DB=ocorrenciaapi"
+      - "POSTGRES_PASSWORD=bebaagua!"
