@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-OcorrenciaApiApplication<ocorrencia-api>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.hugo.hbs64.ocorrenciaapi.OcorrenciaApiApplication",
+      "projectName": "ocorrencia-api",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
