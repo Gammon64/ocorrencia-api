@@ -2,13 +2,12 @@ package com.hugo.hbs64.ocorrenciaapi.entities.mappers;
 
 import com.hugo.hbs64.ocorrenciaapi.entities.Cliente;
 import com.hugo.hbs64.ocorrenciaapi.entities.dtos.ClienteDTO;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
-@Mapper
-public interface ClienteMapper {
+public class ClienteMapper {
 
-    ClienteMapper INSTANCE = Mappers.getMapper(ClienteMapper.class);
+    public static final ClienteMapper INSTANCE = new ClienteMapper();
 
-    Cliente fromDto(ClienteDTO clienteDTO);
+    public Cliente fromDto(ClienteDTO clienteDTO) {
+        return new Cliente(null, clienteDTO.nmeCliente(), clienteDTO.dtaNascimento(), clienteDTO.nroCpf(), null);
+    }
 }
