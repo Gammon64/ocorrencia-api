@@ -2,12 +2,12 @@ package com.hugo.hbs64.ocorrenciaapi.entities.mappers;
 
 import com.hugo.hbs64.ocorrenciaapi.entities.Endereco;
 import com.hugo.hbs64.ocorrenciaapi.entities.dtos.EnderecoDTO;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
-@Mapper
-public interface EnderecoMapper {
-    EnderecoMapper INSTANCE = Mappers.getMapper(EnderecoMapper.class);
+public class EnderecoMapper {
+    public static final EnderecoMapper INSTANCE = new EnderecoMapper();
 
-    Endereco fromDto(EnderecoDTO enderecoDTO);
+    public Endereco fromDto(EnderecoDTO enderecoDTO) {
+        return new Endereco(null, enderecoDTO.nmeLogradouro(), enderecoDTO.nmeBairro(), enderecoDTO.nroCep(),
+                enderecoDTO.nmeCidade(), enderecoDTO.nmeEstado());
+    }
 }
