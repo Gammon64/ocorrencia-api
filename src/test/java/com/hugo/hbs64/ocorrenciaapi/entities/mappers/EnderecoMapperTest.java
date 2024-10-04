@@ -1,22 +1,34 @@
 package com.hugo.hbs64.ocorrenciaapi.entities.mappers;
 
-
-import com.hugo.hbs64.ocorrenciaapi.entities.Endereco;
-import org.junit.jupiter.api.Test;
-
-import static com.hugo.hbs64.ocorrenciaapi.entities.EnderecoConstants.ENDERECO_DTO;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import com.hugo.hbs64.ocorrenciaapi.entities.Endereco;
+import com.hugo.hbs64.ocorrenciaapi.entities.dtos.EnderecoDTO;
+
 class EnderecoMapperTest {
+    private EnderecoDTO enderecoDTO;
+
+    @BeforeEach
+    void setUp() {
+        enderecoDTO = new EnderecoDTO(
+                "Rua dos Bobos",
+                "Jardim das Flores",
+                "12345678",
+                "São Paulo",
+                "SP");
+    }
 
     @Test
     void mapEndereco_withEnderecoDTO_shouldReturnEnderecoDTO() {
-        Endereco cliente = EnderecoMapper.INSTANCE.fromDto(ENDERECO_DTO);
+        Endereco cliente = EnderecoMapper.INSTANCE.fromDto(enderecoDTO);
         assertThat(cliente).isNotNull();
-        assertThat(cliente.getNmeLogradouro()).isEqualTo(ENDERECO_DTO.nmeLogradouro());
-        assertThat(cliente.getNmeBairro()).isEqualTo(ENDERECO_DTO.nmeBairro());
-        assertThat(cliente.getNroCep()).isEqualTo(ENDERECO_DTO.nroCep());
-        assertThat(cliente.getNmeCidade()).isEqualTo(ENDERECO_DTO.nmeCidade());
-        assertThat(cliente.getNmeEstado()).isEqualTo(ENDERECO_DTO.nmeEstado());
+        assertThat(cliente.getNmeLogradouro()).isEqualTo(enderecoDTO.nmeLogradouro());
+        assertThat(cliente.getNmeBairro()).isEqualTo(enderecoDTO.nmeBairro());
+        assertThat(cliente.getNroCep()).isEqualTo(enderecoDTO.nroCep());
+        assertThat(cliente.getNmeCidade()).isEqualTo(enderecoDTO.nmeCidade());
+        assertThat(cliente.getNmeEstado()).isEqualTo(enderecoDTO.nmeEstado());
     }
 }
