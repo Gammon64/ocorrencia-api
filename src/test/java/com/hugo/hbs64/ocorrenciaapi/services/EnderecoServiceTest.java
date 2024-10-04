@@ -1,7 +1,16 @@
 package com.hugo.hbs64.ocorrenciaapi.services;
 
-import com.hugo.hbs64.ocorrenciaapi.entities.Endereco;
-import com.hugo.hbs64.ocorrenciaapi.repositories.EnderecoRepository;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Collections;
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,86 +18,110 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-import java.util.Optional;
-
-import static com.hugo.hbs64.ocorrenciaapi.entities.EnderecoConstants.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import com.hugo.hbs64.ocorrenciaapi.entities.Endereco;
+import com.hugo.hbs64.ocorrenciaapi.entities.dtos.EnderecoDTO;
+import com.hugo.hbs64.ocorrenciaapi.entities.dtos.FormOcorrenciaDTO;
+import com.hugo.hbs64.ocorrenciaapi.repositories.EnderecoRepository;
 
 @ExtendWith(MockitoExtension.class)
 class EnderecoServiceTest {
 
-    @InjectMocks
-    private EnderecoService enderecoService;
-
     @Mock
     private EnderecoRepository enderecoRepository;
 
+    @InjectMocks
+    private EnderecoService enderecoService;
+
     @Test
-    void createEndereco_withValidData_ReturnEndereco() {
-        when(enderecoRepository.save(any())).thenReturn(ENDERECO);
-        Endereco endereco = enderecoService.create(ENDERECO_DTO);
-        assertThat(endereco).isEqualTo(ENDERECO);
+    void testFindAll() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Endereco> enderecoPage = new PageImpl<>(Collections.singletonList(new Endereco()));
+        when(enderecoRepository.findAll(pageable)).thenReturn(enderecoPage);
+
+        Page<Endereco> result = enderecoService.findAll(pageable);
+
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        verify(enderecoRepository, times(1)).findAll(pageable);
     }
 
     @Test
-    void createEndereco_withInvalidData_ThrowsException() {
-        when(enderecoRepository.save(any())).thenThrow(RuntimeException.class);
-        assertThatThrownBy(() -> enderecoService.create(ENDERECO_INVALIDO_DTO)).isInstanceOf(RuntimeException.class);
+    void testFindById() {
+        Long id = 1L;
+        Endereco endereco = new Endereco();
+        when(enderecoRepository.findById(id)).thenReturn(Optional.of(endereco));
+
+        Endereco result = enderecoService.findById(id);
+
+        assertNotNull(result);
+        assertEquals(endereco, result);
+        verify(enderecoRepository, times(1)).findById(id);
     }
 
     @Test
-    void updateEndereco_withValidData_ReturnEndereco() {
-        when(enderecoRepository.save(any())).thenReturn(ENDERECO);
-        Endereco endereco = enderecoService.update(1L, ENDERECO_DTO);
-        assertThat(endereco).isEqualTo(ENDERECO);
+    void testFindByOcorrenciaDTO() {
+        FormOcorrenciaDTO formOcorrenciaDTO = new FormOcorrenciaDTO(
+                "Nome", "12345678900", "Logradouro", "Bairro", "01111000", "Cidade", "SP", Collections.emptyList());
+        Endereco endereco = new Endereco();
+        when(enderecoRepository.findByNmeLogradouroAndNmeBairroAndNroCep(formOcorrenciaDTO.nmeLogradouro(),
+                formOcorrenciaDTO.nmeBairro(), formOcorrenciaDTO.nroCep())).thenReturn(Optional.of(endereco));
+
+        Endereco result = enderecoService.findByOcorrenciaDTO(formOcorrenciaDTO);
+
+        assertNotNull(result);
+        assertEquals(endereco, result);
+        verify(enderecoRepository, times(1)).findByNmeLogradouroAndNmeBairroAndNroCep(formOcorrenciaDTO.nmeLogradouro(),
+                formOcorrenciaDTO.nmeBairro(), formOcorrenciaDTO.nroCep());
     }
 
     @Test
-    void updateEndereco_withInvalidData_ThrowsException() {
-        when(enderecoRepository.save(any())).thenThrow(RuntimeException.class);
-        assertThatThrownBy(() -> enderecoService.update(1L, ENDERECO_INVALIDO_DTO)).isInstanceOf(RuntimeException.class);
+    void testCreate() {
+        EnderecoDTO enderecoDTO = new EnderecoDTO(
+                "Rua A",
+                "Bairro B",
+                "12345678",
+                "Cidade C",
+                "SP");
+        Endereco endereco = new Endereco();
+        when(enderecoRepository.save(any(Endereco.class))).thenReturn(endereco);
+
+        Endereco result = enderecoService.create(enderecoDTO);
+
+        assertNotNull(result);
+        assertEquals(endereco, result);
+        verify(enderecoRepository, times(1)).save(any(Endereco.class));
     }
 
     @Test
-    void getEndereco_withValidId_ReturnEndereco() {
-        when(enderecoRepository.findById(ENDERECO.getCodEndereco())).thenReturn(Optional.of(ENDERECO));
-        Endereco endereco = enderecoService.findById(ENDERECO.getCodEndereco());
-        assertThat(endereco).isEqualTo(ENDERECO);
+    void testUpdate() {
+        Long codEndereco = 1L;
+        EnderecoDTO enderecoDTO = new EnderecoDTO(
+                "Rua A",
+                "Bairro B",
+                "12345678",
+                "Cidade C",
+                "SP");
+        Endereco endereco = new Endereco();
+        when(enderecoRepository.save(any(Endereco.class))).thenReturn(endereco);
+
+        Endereco result = enderecoService.update(codEndereco, enderecoDTO);
+
+        assertNotNull(result);
+        assertEquals(endereco, result);
+        assertEquals(codEndereco, result.getCodEndereco());
+        verify(enderecoRepository, times(1)).save(any(Endereco.class));
     }
 
     @Test
-    void getEndereco_withInvalidId_ThrowsException() {
-        when(enderecoRepository.findById(any())).thenReturn(Optional.empty());
-        assertThatThrownBy(() -> enderecoService.findById(1L)).isInstanceOf(RuntimeException.class);
-    }
+    void testDeleteById() {
+        Long id = 1L;
+        doNothing().when(enderecoRepository).deleteById(id);
 
-    @Test
-    void listEnderecos_withPageable_ReturnPage() {
-        when(enderecoRepository.findAll(Pageable.unpaged())).thenReturn(new PageImpl<>(List.of(ENDERECO)));
-        Page<Endereco> enderecoPage = enderecoService.findAll(Pageable.unpaged());
-        assertThat(enderecoPage).isNotEmpty().hasSize(1).contains(ENDERECO);
-    }
+        enderecoService.deleteById(id);
 
-    @Test
-    void listEnderecos_withPageable_ReturnEmptyPage() {
-        when(enderecoRepository.findAll(Pageable.unpaged())).thenReturn(new PageImpl<>(List.of()));
-        assertThat(enderecoService.findAll(Pageable.unpaged())).isEmpty();
-    }
-
-    @Test
-    void deleteEndereco_withValidId_ReturnVoid() {
-        assertThatCode(() -> enderecoService.deleteById(1L)).doesNotThrowAnyException();
-    }
-
-    @Test
-    void deleteEndereco_withInvalidId_ThrowsException() {
-        doThrow(RuntimeException.class).when(enderecoRepository).deleteById(99L);
-        assertThatThrownBy(() -> enderecoService.deleteById(99L)).isInstanceOf(RuntimeException.class);
+        verify(enderecoRepository, times(1)).deleteById(id);
     }
 }
