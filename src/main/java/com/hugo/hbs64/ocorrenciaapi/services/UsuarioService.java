@@ -18,17 +18,20 @@ public class UsuarioService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
+    private final KafkaService kafkaService;
 
 
-    public UsuarioService(UsuarioRepository usuarioRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, TokenService tokenService) {
+    public UsuarioService(UsuarioRepository usuarioRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, TokenService tokenService, KafkaService kafkaService) {
         this.usuarioRepository = usuarioRepository;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.tokenService = tokenService;
+        this.kafkaService = kafkaService;
     }
 
     /**
      * Cria um novo usuário.
+     *
      * @param usuarioDTO Dados do usuário.
      * @return Usuario criado.
      */
@@ -38,11 +41,16 @@ public class UsuarioService {
         }
         Usuario usuario = UsuarioMapper.INSTANCE.toEntity(usuarioDTO);
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
-        return usuarioRepository.save(usuario);
+        usuario = usuarioRepository.save(usuario);
+
+        // Envia email de boas vindas
+        kafkaService.sendWelcome(usuario);
+        return usuario;
     }
 
     /**
      * Autentica um usuário e retorna um token
+     *
      * @param usuarioDTO Dados do usuário.
      * @return Token JWT.
      */
