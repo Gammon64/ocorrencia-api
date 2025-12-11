@@ -1,3 +1,15 @@
+# O Repositório Mudou! (Este está um Pouco Poeirento) 🧹
+Olá! Se você chegou até aqui, é porque está de olho em algo que já foi superado por uma versão mais nova e brilhante.
+
+Peço mil desculpas pela poeira e teias de aranha, mas este repositório está oficialmente aposentado e desatualizado.
+E atualizarei o link do currículo, (caso tenha vindo por lá).
+---
+👉 A versão principal e ativa deste projeto foi movida para o novo endereço:
+
+[Novo Repositório Principal (Clique Aqui para o Futuro!)](https://github.com/Gammon64/AsheOs)
+Agradeço a compreensão! Por favor, use e contribua apenas no novo repositório. Vemo-nos por lá! 👋
+
+___
 # Boas vindas ao Ocorrências API!
 
 O projeto consiste em uma API REST para o cadastro de ocorrências, clientes e endereços em um banco PostgreSQL, com a
